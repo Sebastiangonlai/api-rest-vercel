@@ -19,15 +19,15 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'components', 'home.htm'));
+  res.sendFile(path.join(__dirname, '..', 'components', 'home.html'));
 });
 
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'components', 'about.htm'));
+  res.sendFile(path.join(__dirname, '..', 'components', 'about.html'));
 });
 
 app.get('/uploadUser', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'components', 'user_upload_form.htm'));
+  res.sendFile(path.join(__dirname, '..', 'components', 'user_upload_form.html'));
 });
 
 app.post('/uploadSuccessful', urlencodedParser, async (req, res) => {
@@ -48,7 +48,7 @@ app.post('/uploadSuccessful', urlencodedParser, async (req, res) => {
 app.get('/allUsers', async (req, res) => {
   try {
     const connection = await mysql.createConnection(dbConfig);
-    const [users] = await connection.execute('SELECT * FROM Users');
+    const [users] = await connection.execute('SELECT * FROM ranking');
     await connection.end();
 
     if (users.length > 0) {
@@ -56,9 +56,9 @@ app.get('/allUsers', async (req, res) => {
         .map(
           (user) =>
             `<tr>
-              <td>${user.id}</td>
+              <td>${user.rank}</td>
+              <td>${user.score}</td>
               <td>${user.name}</td>
-              <td>${user.email}</td>
             </tr>`
         )
         .join('');
@@ -80,10 +80,10 @@ app.get('/allUsers', async (req, res) => {
             <table>
               <thead>
                 <tr>
-                  <th>User ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                </tr>
+                  <th>Rank</th>
+                  <th>Score</th>
+                  <th>Name</th> 
+                  </tr>
               </thead>
               <tbody>
                 ${tableContent}
@@ -91,20 +91,23 @@ app.get('/allUsers', async (req, res) => {
             </table>
             <div>
               <a href="/">Home</a>
-              <a href="/uploadUser">Add User</a>
+              <a href="/uploadUser">Add Score</a>
             </div>
           </body>
         </html>
       `);
     } else {
-      res.status(404).send('Users not found');
+      res.status(404).send('Ranking not found');
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error retrieving users');
+    res.status(500).send('Error retrieving ranking');
   }
 });
 
 app.listen(3000, () => console.log('Server ready on port 3000.'));
+app.use((req, res) => {
+  res.status(404).send('404 - Page not found');
+});
 
 module.exports = app;

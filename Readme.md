@@ -6,3 +6,7 @@ vercel login          # Login to Vercel
 vercel                # Deploy to staging
 vercel --prod         # Deploy to production
 ```
+
+```sh
+node api/index       # Start the API server
+```
