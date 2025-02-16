@@ -2,8 +2,8 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
-import mysql from "mysql2/promise";
 
+import mysql from "mysql2/promise";
 
 import * as middlewares from './middlewares';
 import api from './api';
@@ -18,30 +18,28 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-let conn;
-
 app.get<{}, MessageResponse>('/', (req, res) => {
-  mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-  }).then(connection => {
-    conn = connection;
-    return conn.execute("SELECT rank, score, name FROM ranking");
-  }).then((rows) => {
-    rows.forEach((row:any) => {
-      res.json(row);
-    }
-    );
-    // res.json(rows);
-  }).catch((err) => {
-    console.error(err);
-    res.status(500).json({ message: 'Internal Server Error' });
+  res.json({
+    message: 'sebas',
   });
 });
 
+type EmojiResponse = string[];
 
+
+app.get<{}, EmojiResponse>('/se', async (req, res) => {
+  let connectiosn = mysql.createConnection({
+       host: process.env.DB_HOST,
+       user: process.env.DB_USER,
+       password: process.env.DB_PASS,
+       database: process.env.DB_NAME,
+     });
+
+  const [rows] = await (await connectiosn).execute("SELECT rank, score, name FROM ranking ORDER BY score ASC LIMIT 5");
+  (rows as any[]).forEach((row: any) => {
+    res.json(row);
+  });
+});
 
 app.use('/api/v1', api);
 
