@@ -18,27 +18,28 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.get<{}, MessageResponse>('/', (req, res) => {
-  res.json({
-    message: 'sebas',
-  });
-});
+// app.get<{}, MessageResponse>('/s', (req, res) => {
+//   res.json({
+//     message: 'sebas',
+//   });
+// });
 
-type EmojiResponse = string[];
+// type EmojiResponse = string[];
 
 
-app.get<{}, EmojiResponse>('/ranking', async (req, res) => {
+app.get<{}, MessageResponse>('/',  async (req, res) => {
+ 
   try {
     let connectiosn;
-     connectiosn = await mysql.createConnection({
+     connectiosn =  mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
     });
     let rows;
-      rows=await connectiosn.execute("SELECT rank, score, name FROM ranking");
-    rows.forEach((row: any) => {
+      rows= (await connectiosn).execute("SELECT rank, score, name FROM ranking");
+    (await rows).forEach((row: any) => {
       res.json(row);
     });
   } catch (error) {
