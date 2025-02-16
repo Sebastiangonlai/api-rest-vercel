@@ -20,12 +20,12 @@ app.use(express.json());
 
 
 app.get<{}, MessageResponse>('/', async(req, res) => {
-  //  let connectiosn = await mysql.createConnection({
-  //        host: process.env.DB_HOST,
-  //        user: process.env.DB_USER,
-  //        password: process.env.DB_PASS,
-  //        database: process.env.DB_NAME,
-  //      });
+   let connectiosn = mysql.createConnection({
+         host: process.env.DB_HOST,
+         user: process.env.DB_USER,
+         password: process.env.DB_PASS,
+         database: process.env.DB_NAME,
+       });
   // const [rows] = await (await connectiosn).execute("SELECT rank, score, name FROM ranking ORDER BY score ASC LIMIT 5");
    // console.log("🚀 ~ file: emojis.ts ~ line 50 ~ router.get ~ rows", rows)
   //  (rows as any[]).forEach((row: any) => {
