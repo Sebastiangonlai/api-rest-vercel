@@ -27,7 +27,7 @@ app.get<{}, MessageResponse>('/', async(req, res) => {
          database: process.env.DB_NAME,
        });
   const rows = (await conn).execute("SELECT rank, score, name FROM ranking ORDER BY score ASC LIMIT 5");
-   console.log("🚀 ~ file: emojis.ts ~ line 50 ~ router.get ~ rows", rows)
+  //  console.log("🚀 ~ file: emojis.ts ~ line 50 ~ router.get ~ rows", rows)
   //  (rows as any[]).forEach((row: any) => {
   //    res.json(row);
   //  });
