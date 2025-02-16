@@ -42,7 +42,7 @@ app.get<{}, EmojiResponse>('/ranking', async (req, res) => {
       res.json(row);
     });
   } catch (error) {
-    console.log("🚀 ~ file: emojis.ts ~ line 47 ~ router.get ~ connectiosn")
+ return error;
   }
 
 });
