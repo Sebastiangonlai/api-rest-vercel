@@ -34,8 +34,8 @@ app.post('/uploadSuccessful', urlencodedParser, async (req, res) => {
   try {
     const connection = await mysql.createConnection(dbConfig);
     await connection.execute(
-      'INSERT INTO Users (Id, Name, Email) VALUES (?, ?, ?)',
-      [req.body.user_id, req.body.name, req.body.email]
+      'INSERT INTO ranking (rank, score, name) VALUES (?, ?, ?)',
+      [req.body.rank, req.body.score, req.body.name]
     );
     await connection.end();
     res.status(200).send('<h1>User added successfully</h1>');
@@ -90,7 +90,7 @@ app.get('/allUsers', async (req, res) => {
               </tbody>
             </table>
             <div>
-              <a href="/">Home</a>
+              <a href="/">Inicio</a>
               <a href="/uploadUser">Add Score</a>
             </div>
           </body>
