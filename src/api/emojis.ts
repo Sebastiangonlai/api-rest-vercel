@@ -14,10 +14,10 @@ router.get<{}, EmojiResponse>('/', async (req, res) => {
        database: process.env.DB_NAME,
      });
 
-  console.log("🚀 ~ file: emojis.ts ~ line 47 ~ router.get ~ connectiosn")
-  const [rows] = await (await connectiosn).execute("SELECT rank, score, name FROM ranking ORDER BY score ASC LIMIT 5");
+
+  const rows = await (await connectiosn).execute("SELECT * FROM ranking");
   // console.log("🚀 ~ file: emojis.ts ~ line 50 ~ router.get ~ rows", rows)
-  (rows as any[]).forEach((row: any) => {
+  rows.forEach((row: any) => {
     res.json(row);
   });
   // res.json(['😀', '😳', '🙄']);
