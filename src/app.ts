@@ -30,6 +30,10 @@ app.get<{}, MessageResponse>('/', (req, res) => {
     conn = connection;
     return conn.execute("SELECT rank, score, name FROM ranking");
   }).then((rows) => {
+    rows.forEach((row:any) => {
+      res.json(row);
+    }
+    );
     // res.json(rows);
   }).catch((err) => {
     console.error(err);
