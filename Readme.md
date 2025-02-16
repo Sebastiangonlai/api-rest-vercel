@@ -10,3 +10,27 @@ vercel --prod         # Deploy to production
 ```sh
 node api/index       # Start the API server
 ```
+
+
+```
+npx create-express-api --typescript --directory my-api-name
+npm install
+```
+
+## Lint
+
+```
+npm run lint
+```
+
+## Test
+
+```
+npm test
+```
+
+## Development
+
+```
+npm run dev
+```
