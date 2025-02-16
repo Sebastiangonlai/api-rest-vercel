@@ -27,18 +27,24 @@ app.get<{}, MessageResponse>('/', (req, res) => {
 type EmojiResponse = string[];
 
 
-app.get<{}, EmojiResponse>('/se', async (req, res) => {
-  let connectiosn = mysql.createConnection({
-       host: process.env.DB_HOST,
-       user: process.env.DB_USER,
-       password: process.env.DB_PASS,
-       database: process.env.DB_NAME,
-     });
+app.get<{}, EmojiResponse>('/ranking', async (req, res) => {
+  try {
+    let connectiosn;
+     connectiosn = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+    });
+    let rows;
+      rows=await connectiosn.execute("SELECT rank, score, name FROM ranking");
+    rows.forEach((row: any) => {
+      res.json(row);
+    });
+  } catch (error) {
+    console.log("🚀 ~ file: emojis.ts ~ line 47 ~ router.get ~ connectiosn")
+  }
 
-  const [rows] = await (await connectiosn).execute("SELECT rank, score, name FROM ranking ORDER BY score ASC LIMIT 5");
-  (rows as any[]).forEach((row: any) => {
-    res.json(row);
-  });
 });
 
 app.use('/api/v1', api);
